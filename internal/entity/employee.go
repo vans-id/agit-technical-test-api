@@ -14,7 +14,7 @@ type Employee struct {
 	DateOfBirth  string `gorm:"not null"`
 	Age          uint   `gorm:"not null"`
 	Address      string `gorm:"not null"`
-	Religion     string `gorm:"not null"`
+	Religion     uint   `gorm:"not null"`
 	Gender       uint   `gorm:"not null"`
 	Phone        string `gorm:"not null"`
 	Email        string `gorm:"not null"`

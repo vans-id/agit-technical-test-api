@@ -1,7 +1,29 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"net/http"
+
+	"github.com/joho/godotenv"
+	"github.com/vans-id/agit-technical-test-api.git/internal/routes"
+	"github.com/vans-id/agit-technical-test-api.git/pkg/constants"
+	"github.com/vans-id/agit-technical-test-api.git/pkg/pg"
+)
 
 func main() {
-	fmt.Println("hello world")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	db, err := pg.SetupDB()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	r := routes.NewRouter(routes.GetConfig(db))
+	server := http.Server{
+		Addr:    constants.APP_PORT,
+		Handler: r,
+	}
+	server.ListenAndServe()
 }
