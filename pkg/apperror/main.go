@@ -9,6 +9,7 @@ var (
 
 	ErrMissingToken  = errors.New("missing token")
 	ErrNotAuthorized = errors.New("not authorized")
+	ErrInvalidCred   = errors.New("wrong username or password")
 	ErrWrongUser     = errors.New("wrong user")
 
 	ErrInternal = errors.New("something went wrong")
