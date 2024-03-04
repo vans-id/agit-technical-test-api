@@ -6,8 +6,8 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/vans-id/agit-technical-test-api.git/internal/routes"
-	"github.com/vans-id/agit-technical-test-api.git/pkg/constants"
 	"github.com/vans-id/agit-technical-test-api.git/pkg/pg"
+	"github.com/vans-id/agit-technical-test-api.git/shared/constants"
 )
 
 func main() {

@@ -2,19 +2,20 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/vans-id/agit-technical-test-api.git/internal/handler"
 )
 
 type RouterConfig struct {
-	// AuthHandler     handler.AuthHandler
+	AuthHandler handler.AuthHandler
 	// EmployeeHandler handler.EmployeeHandler
 }
 
 func NewRouter(config RouterConfig) *gin.Engine {
-	router := gin.New()
-	router.ContextWithFallback = true
+	router := gin.Default()
+	// router.ContextWithFallback = true
 
-	// router.GET("/jobs", config.AuthHandler.HandleAllJobs)
-	// router.POST("/login", config.EmployeeHandler.HandleLogin)
+	router.POST("/auth/register", config.AuthHandler.HandleRegister)
+	router.POST("/auth/login", config.AuthHandler.HandleLogin)
 
 	return router
 }

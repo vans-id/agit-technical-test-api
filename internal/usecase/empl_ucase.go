@@ -5,7 +5,7 @@ import (
 
 	"github.com/vans-id/agit-technical-test-api.git/internal/entity"
 	"github.com/vans-id/agit-technical-test-api.git/internal/repository"
-	"github.com/vans-id/agit-technical-test-api.git/pkg/apperror"
+	"github.com/vans-id/agit-technical-test-api.git/shared/apperror"
 )
 
 type EmplUsecase interface {

@@ -5,9 +5,9 @@ import (
 
 	"github.com/vans-id/agit-technical-test-api.git/internal/entity"
 	"github.com/vans-id/agit-technical-test-api.git/internal/repository"
-	"github.com/vans-id/agit-technical-test-api.git/pkg/apperror"
 	"github.com/vans-id/agit-technical-test-api.git/pkg/hasher"
 	"github.com/vans-id/agit-technical-test-api.git/pkg/token"
+	"github.com/vans-id/agit-technical-test-api.git/shared/apperror"
 )
 
 type AuthUsecase interface {
@@ -18,10 +18,10 @@ type AuthUsecase interface {
 type authUsecase struct {
 	authRepo repository.AuthRepository
 	jwt      token.JWTHelper
-	hasher   hasher.BcryptHasher
+	hasher   hasher.Hasher
 }
 
-func NewAuthUsecase(r repository.AuthRepository, jwt token.JWTHelper, hasher hasher.BcryptHasher) AuthUsecase {
+func NewAuthUsecase(r repository.AuthRepository, jwt token.JWTHelper, hasher hasher.Hasher) AuthUsecase {
 	return &authUsecase{authRepo: r, jwt: jwt, hasher: hasher}
 }
 

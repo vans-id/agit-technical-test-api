@@ -3,7 +3,7 @@ package pg
 import (
 	"fmt"
 
-	"github.com/vans-id/agit-technical-test-api.git/pkg/constants"
+	"github.com/vans-id/agit-technical-test-api.git/shared/constants"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

@@ -1,10 +1,8 @@
 package token
 
 import (
-	"os"
-
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/vans-id/agit-technical-test-api.git/pkg/constants"
+	"github.com/vans-id/agit-technical-test-api.git/shared/constants"
 )
 
 type JWTHelper interface {
@@ -18,8 +16,6 @@ func NewJWTHelper() JWTHelper {
 }
 
 func (h *JWTHelperImpl) GenerateToken(userId uint) (string, error) {
-	var secretKey = os.Getenv("APP_SECRET_KEY")
-
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"iss":     constants.JWT_ISS,
@@ -28,5 +24,5 @@ func (h *JWTHelperImpl) GenerateToken(userId uint) (string, error) {
 			"user_id": userId,
 		})
 
-	return token.SignedString([]byte(secretKey))
+	return token.SignedString([]byte(constants.APP_SECRET_KEY))
 }
