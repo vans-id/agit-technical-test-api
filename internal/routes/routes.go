@@ -15,6 +15,7 @@ func NewRouter(config RouterConfig) *gin.Engine {
 	router := gin.Default()
 	// router.ContextWithFallback = true
 	router.Use(middleware.HandleErrors())
+	router.Use(middleware.CorsMiddleware())
 
 	router.POST("/auth/register", config.AuthHandler.HandleRegister)
 	router.POST("/auth/login", config.AuthHandler.HandleLogin)
