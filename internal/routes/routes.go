@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/vans-id/agit-technical-test-api.git/internal/handler"
+	"github.com/vans-id/agit-technical-test-api.git/pkg/middleware"
 )
 
 type RouterConfig struct {
@@ -13,9 +14,12 @@ type RouterConfig struct {
 func NewRouter(config RouterConfig) *gin.Engine {
 	router := gin.Default()
 	// router.ContextWithFallback = true
+	router.Use(middleware.HandleErrors())
 
 	router.POST("/auth/register", config.AuthHandler.HandleRegister)
 	router.POST("/auth/login", config.AuthHandler.HandleLogin)
+
+	router.Use(middleware.HandleAuthentication)
 
 	router.GET("/employees", config.EmployeeHandler.HandleGetAll)
 	router.GET("/employees/:id", config.EmployeeHandler.HandleGetDetail)
