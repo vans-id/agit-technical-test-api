@@ -26,11 +26,11 @@ func NewAuthUsecase(r repository.AuthRepository, jwt token.JWTHelper, hasher has
 }
 
 func (uc *authUsecase) Register(ctx context.Context, payload *entity.User) (*entity.User, error) {
-	payload, err := uc.authRepo.FindOneByUsername(ctx, payload.Username)
+	result, err := uc.authRepo.FindOneByUsername(ctx, payload.Username)
 	if err != nil {
 		return nil, err
 	}
-	if payload != nil {
+	if result != nil {
 		return nil, apperror.ErrAlreadyExists
 	}
 

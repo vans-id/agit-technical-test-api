@@ -10,7 +10,7 @@ func Seed(db *gorm.DB) {
 	users := []*entity.User{
 		{
 			Username: "admin",
-			Password: hashPassword("admin"),
+			Password: hashPassword("password"),
 		},
 	}
 	db.Create(users)

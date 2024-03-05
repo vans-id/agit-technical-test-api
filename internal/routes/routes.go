@@ -6,8 +6,8 @@ import (
 )
 
 type RouterConfig struct {
-	AuthHandler handler.AuthHandler
-	// EmployeeHandler handler.EmployeeHandler
+	AuthHandler     handler.AuthHandler
+	EmployeeHandler handler.EmplHandler
 }
 
 func NewRouter(config RouterConfig) *gin.Engine {
@@ -16,6 +16,12 @@ func NewRouter(config RouterConfig) *gin.Engine {
 
 	router.POST("/auth/register", config.AuthHandler.HandleRegister)
 	router.POST("/auth/login", config.AuthHandler.HandleLogin)
+
+	router.GET("/employees", config.EmployeeHandler.HandleGetAll)
+	router.GET("/employees/:id", config.EmployeeHandler.HandleGetDetail)
+	router.POST("/employees", config.EmployeeHandler.HandleAdd)
+	router.PUT("/employees/:id", config.EmployeeHandler.HandleEdit)
+	router.DELETE("/employees/:id", config.EmployeeHandler.HandleRemove)
 
 	return router
 }

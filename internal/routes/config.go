@@ -17,12 +17,13 @@ func GetConfig(db *gorm.DB) RouterConfig {
 	authUsecase := usecase.NewAuthUsecase(authRepo, jwtHelper, hasher)
 	authHandler := handler.NewAuthHandler(authUsecase)
 
-	// jobRepo := repository.NewJobRepository(db)
-	// jobUsecase := usecase.NewJobUsecase(jobRepo)
-	// jobHandler := handler.NewJobHandler(jobUsecase)
+	emplRepo := repository.NewEmplRepository(db)
+	emplUsecase := usecase.NewEmplUsecase(emplRepo)
+	emplHandler := handler.NewEmplHandler(emplUsecase)
 
 	config := RouterConfig{
-		AuthHandler: authHandler,
+		AuthHandler:     authHandler,
+		EmployeeHandler: emplHandler,
 	}
 
 	return config

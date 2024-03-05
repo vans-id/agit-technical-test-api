@@ -3,6 +3,7 @@ package entity
 import (
 	"time"
 
+	"github.com/vans-id/agit-technical-test-api.git/internal/dto"
 	"gorm.io/gorm"
 )
 
@@ -21,4 +22,20 @@ type Employee struct {
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	DeletedAt    gorm.DeletedAt
+}
+
+func (e *Employee) ToResponse() *dto.EmployeeResponse {
+	return &dto.EmployeeResponse{
+		Id:           e.Id,
+		Name:         e.Name,
+		Nip:          e.Nip,
+		PlaceOfBirth: e.PlaceOfBirth,
+		DateOfBirth:  e.DateOfBirth,
+		Age:          e.Age,
+		Address:      e.Address,
+		Religion:     e.Religion,
+		Gender:       e.Gender,
+		Phone:        e.Phone,
+		Email:        e.Email,
+	}
 }

@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"time"
 
 	"github.com/vans-id/agit-technical-test-api.git/internal/entity"
 	"github.com/vans-id/agit-technical-test-api.git/internal/repository"
@@ -13,7 +14,7 @@ type EmplUsecase interface {
 	GetDetail(ctx context.Context, id uint) (*entity.Employee, error)
 	Add(ctx context.Context, payload *entity.Employee) error
 	Edit(ctx context.Context, payload *entity.Employee) error
-	Remove(ctx context.Context, payload *entity.Employee) error
+	Remove(ctx context.Context, id uint) error
 }
 
 type emplUsecase struct {
@@ -29,10 +30,22 @@ func (uc *emplUsecase) GetAll(ctx context.Context, search string) ([]*entity.Emp
 }
 
 func (uc *emplUsecase) GetDetail(ctx context.Context, id uint) (*entity.Employee, error) {
-	return uc.emplRepo.FindOneById(ctx, id)
+	employee, err := uc.emplRepo.FindOneById(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if employee == nil {
+		return nil, apperror.ErrNotFound
+	}
+	return employee, err
 }
 
 func (uc *emplUsecase) Add(ctx context.Context, payload *entity.Employee) error {
+	age, err := calculateAge(payload.DateOfBirth)
+	if err != nil {
+		return err
+	}
+	payload.Age = age
 	return uc.emplRepo.Create(ctx, payload)
 }
 
@@ -45,11 +58,16 @@ func (uc *emplUsecase) Edit(ctx context.Context, payload *entity.Employee) error
 		return apperror.ErrInvalidInput
 	}
 
+	age, err := calculateAge(payload.DateOfBirth)
+	if err != nil {
+		return err
+	}
+
 	currentEmployee.Name = payload.Name
 	currentEmployee.Nip = payload.Nip
 	currentEmployee.PlaceOfBirth = payload.PlaceOfBirth
 	currentEmployee.DateOfBirth = payload.DateOfBirth
-	currentEmployee.Age = payload.Age
+	currentEmployee.Age = age
 	currentEmployee.Address = payload.Address
 	currentEmployee.Religion = payload.Religion
 	currentEmployee.Gender = payload.Gender
@@ -59,8 +77,8 @@ func (uc *emplUsecase) Edit(ctx context.Context, payload *entity.Employee) error
 	return uc.emplRepo.Update(ctx, currentEmployee)
 }
 
-func (uc *emplUsecase) Remove(ctx context.Context, payload *entity.Employee) error {
-	currentEmployee, err := uc.emplRepo.FindOneById(ctx, payload.Id)
+func (uc *emplUsecase) Remove(ctx context.Context, id uint) error {
+	currentEmployee, err := uc.emplRepo.FindOneById(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -69,4 +87,20 @@ func (uc *emplUsecase) Remove(ctx context.Context, payload *entity.Employee) err
 	}
 
 	return uc.emplRepo.Delete(ctx, currentEmployee)
+}
+
+func calculateAge(dobString string) (uint, error) {
+	dob, err := time.Parse("2006-01-02", dobString)
+	if err != nil {
+		return 0, apperror.ErrInternal
+	}
+
+	currentTime := time.Now()
+	age := currentTime.Year() - dob.Year()
+
+	if currentTime.YearDay() < dob.YearDay() {
+		age--
+	}
+
+	return uint(age), nil
 }
